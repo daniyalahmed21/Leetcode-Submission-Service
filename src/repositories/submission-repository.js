@@ -1,4 +1,4 @@
-import SubmissionModel from '../models/submissionModel.js';
+import SubmissionModel from '../models/submission-model.js';
 
 class SubmissionRepository {
     constructor() {

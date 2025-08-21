@@ -1,7 +1,7 @@
 import Fastify from "fastify";
-import App from "./app.js";
+import App from "./src/app.js";
 import fastifyEnv from "@fastify/env";
-import schema from "./config/serverConfig.js";
+import schema from "./src/config/server-config.js";
 
 const fastify = Fastify({ logger: true });
 
@@ -14,6 +14,8 @@ const start = async () => {
     });
 
     await fastify.register(App);
+    await fastify.ready();
+    console.log(fastify.printRoutes());
 
     const port = fastify.config.PORT || 3000;
     await fastify.listen({ port });

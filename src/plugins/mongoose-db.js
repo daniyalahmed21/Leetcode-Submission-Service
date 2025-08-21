@@ -1,10 +1,8 @@
 import mongoose from "mongoose";
-import fp from "fastify-plugin"
+import fp from "fastify-plugin";
 const connectDB = async (fastify, options) => {
-  const {mongoURI} = options
+  const { mongoURI } = options;
   try {
- 
-
     await mongoose.connect(mongoURI);
     console.log("MongoDB connection successful.");
 
