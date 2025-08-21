@@ -1,10 +1,12 @@
-import { createSubmission } from "../services/submission-service.js";
+import { createSubmissionService } from "../services/submission-service.js";
 
 async function createSubmissionController(request, reply) {
   const { fastify } = request;
+
   try {
     const { payload } = request.body;
-    const job = await createSubmission(fastify, payload);
+
+    const { job, newSubmission } = await createSubmissionService(fastify, payload);
 
     reply.code(200).send({
       message: "Job successfully submitted to queue",

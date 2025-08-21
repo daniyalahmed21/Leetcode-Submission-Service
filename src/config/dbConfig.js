@@ -3,13 +3,9 @@ import fp from "fastify-plugin"
 const connectDB = async (fastify, options) => {
   const {mongoURI} = options
   try {
-    // Set Mongoose options to avoid deprecation warnings
-    const options = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    };
+ 
 
-    await mongoose.connect(mongoURI, options);
+    await mongoose.connect(mongoURI);
     console.log("MongoDB connection successful.");
 
     mongoose.connection.on("connected", () => {
