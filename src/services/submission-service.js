@@ -9,12 +9,16 @@ export async function createSubmissionService(fastify, payload) {
     const problem = await fetchProblemDetails(payload.problemId);
 
     // Combine code stubs + user code
-    const stub = problem.codeStubs.find(c => c.language === payload.language);
+    const stub = problem.codeStubs.find((c) => c.language === payload.language);
     if (!stub) {
       throw new Error(`No code stub found for language: ${payload.language}`);
     }
 
-    const fullCode = `${stub.startSnippet}\n${payload.code}\n${stub.endSnippet}`;
+    const fullCode = `
+${stub.startSnippet}
+${payload.code}  
+${stub.endSnippet}
+`;
 
     // Save submission with fullCode
     const newSubmission = await submissionRepository.create({
@@ -22,16 +26,18 @@ export async function createSubmissionService(fastify, payload) {
       code: fullCode,
     });
 
-    // Queue job for evaluator
+    console.log("Problem details:", problem);
+    const firstTestcase = problem.testcases[0] ?? { input: "", output: "" };
+
     const job = await submission.add("process-submission", {
       submissionId: newSubmission._id,
       problemId: payload.problemId,
       code: fullCode,
       language: payload.language,
-      testcases: problem.testcases,
+      inputTestCase: firstTestcase.input,
+      outputTestCase: firstTestcase.output,
     });
 
-    console.log("Job queued:", job);
 
     return { job };
   } catch (err) {
