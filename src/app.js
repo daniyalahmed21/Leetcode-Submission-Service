@@ -5,7 +5,7 @@ import mongooseDB from "./plugins/mongoose-db.js";
 import repositoryPlugin from "./plugins/repository.js";
 import servicePlugin from "./plugins/service.js";
 import apiRoutes from "./routes/api/api-routes.js";
-
+import workersPlugin from "./plugins/workers.js"
 async function appRootPlugin(fastify, options) {
   // Mongo
   await fastify.register(mongooseDB, {
@@ -25,10 +25,14 @@ async function appRootPlugin(fastify, options) {
   // Queues
   await fastify.register(queuesPlugin);
 
+  //workers
+  await fastify.register(workersPlugin);
+
   // Services
   await fastify.register(servicePlugin);
 
   await fastify.register(apiRoutes, { prefix: "/api" });
+
 }
 
 export default fp(appRootPlugin);
