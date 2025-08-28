@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Worker } from "bullmq";
 
 export default async function evaluationQueueWorker(fastify, options) {
@@ -5,7 +6,13 @@ export default async function evaluationQueueWorker(fastify, options) {
     "EvaluationQueue",
     async (job) => {
       if (job.name === "EvaluationJob") {
-        console.log(job.data);
+        const { response, userID, submissionId } = job.data;
+        console.log("status", response.status);
+
+        await fastify.submissionRepository.updateStatus(
+          submissionId,
+          response.status
+        );
       }
     },
     { connection: fastify.redis }

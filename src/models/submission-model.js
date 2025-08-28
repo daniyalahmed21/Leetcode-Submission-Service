@@ -19,8 +19,8 @@ const submissionSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["Pending", "Success", "RE", "TLE", "MLE", "WA"],
-    default: "Pending",
+    enum: ["PENDING", "SUCCESS", "ERROR", "TLE", "MLE", "WA"],
+    default: "PENDING",
   },
 });
 
